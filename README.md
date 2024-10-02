@@ -39,6 +39,21 @@ This service allows users to register, log in, rate movies, and retrieve movie d
   }
   ```
 
+### POST `/movies`
+
+- **Description**: Adds a new movie to the database (Admin only).
+- **Authentication**: Access token required.
+- **Request Body**:
+
+  ```json
+  {
+    "title": "Movie Title",
+    "director": "John Doe",
+    "genre": "Action",
+    "release_year": "2024"
+  }
+  ```
+
 ## Installation
 
 1. Clone the repository:
@@ -77,7 +92,7 @@ This service allows users to register, log in, rate movies, and retrieve movie d
    openssl rand -hex 32
    ```
 
-   > If `openssl` is not installed on your machine, you can use an online tool to generate a random hex string.
+   > If `openssl` is not installed on your machine, then you can use an online tool to generate a random hex string.
 
 7. Run the service:
    ```bash
