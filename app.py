@@ -4,7 +4,7 @@ from database.db import db
 from tokens.jwt import jwt
 from routes.auth import auth_blueprint
 from routes.movies import movies_blueprint
-
+from routes.ratings import ratings_blueprint
 
 def create_app():
     app = Flask(__name__)
@@ -18,6 +18,7 @@ def create_app():
 
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(movies_blueprint)
+    app.register_blueprint(ratings_blueprint)
 
     return app
 
