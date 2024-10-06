@@ -61,9 +61,11 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 
-# Flask stuff:
-instance/
+# Flask stuff: 
+instance/*     
 .webassets-cache
+# lets us keep the instance directory in git without db contents
+!instance/.gitkeep
 
 # Scrapy stuff:
 .scrapy
