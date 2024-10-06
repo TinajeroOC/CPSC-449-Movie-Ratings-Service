@@ -25,14 +25,11 @@ def create_app():
 
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(movies_blueprint)
-<<<<<<< HEAD
     
     from routes.file_upload import file_upload_blueprint
     app.register_blueprint(file_upload_blueprint)
 
-=======
     app.register_blueprint(ratings_blueprint)
->>>>>>> 416056dbd6b9cd7abc91c35bfb34aa1e8e7e936a
 
     return app
 
