@@ -13,11 +13,22 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
 
+    app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'uploads')
+    app.config['ALLOWED_EXTENSIONS'] = {'jpg', 'jpeg', 'png', 'pdf'}
+
+    if not os.path.exists(app.config['UPLOAD_FOLDER']):
+        os.makedirs(app.config['UPLOAD_FOLDER'])
+
+
     db.init_app(app)
     jwt.init_app(app)
 
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(movies_blueprint)
+    
+    from routes.file_upload import file_upload_blueprint
+    app.register_blueprint(file_upload_blueprint)
+
 
     return app
 
