@@ -41,7 +41,7 @@ def add_rating():
 
     if movie_exists:
         movie_id = movie_exists.id
-        print("Movie Found!")
+        # print("Movie Found!")
     else:
         return jsonify({"message":"Specified movie not found"}), 404
 
@@ -50,7 +50,7 @@ def add_rating():
         return jsonify({"message": "movie_id or rating is undefined"}), 400    
     
 
-    print("check for previous rating")
+    # print("check for previous rating")
     # Check if the user has already rated the movie... make sure UUID are type UUID and not str
     existing_rating = Rating.query.filter_by(movie_id=movie_id, user_id=user_id).first()
     if existing_rating:
@@ -65,7 +65,7 @@ def add_rating():
         return jsonify({"message": "Rating must be an integer"}), 400
     
 
-    print("Create new Rating record")
+    # print("Create new Rating record")
     # create rating object and add to database
 
     new_rating = Rating(
