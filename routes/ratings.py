@@ -50,7 +50,6 @@ def add_rating():
         return jsonify({"message": "movie_id or rating is undefined"}), 400    
     
 
-    # print("check for previous rating")
     # Check if the user has already rated the movie... make sure UUID are type UUID and not str
     existing_rating = Rating.query.filter_by(movie_id=movie_id, user_id=user_id).first()
     if existing_rating:
@@ -63,10 +62,6 @@ def add_rating():
             return jsonify({"message": "Rating must be between 1 and 5"}), 400
     except (ValueError, TypeError):
         return jsonify({"message": "Rating must be an integer"}), 400
-    
-
-    # print("Create new Rating record")
-    # create rating object and add to database
 
     new_rating = Rating(
         movie_id=movie_id,
@@ -78,13 +73,37 @@ def add_rating():
     db.session.add(new_rating)
     db.session.commit()
 
-
     return jsonify({"message": "Rating has been added"}), 200
 
 
-# @ratings_blueprint.route("/ratings", methods=["GET"])
-# @jwt_required()
-# def get_all_ratings():
-#     # get all user ratings for all moview, group by movie, created date
+
+
+@ratings_blueprint.route("/ratings", methods=["GET"])
+@jwt_required()
+def get_all_ratings():
+    # get all user ratings for all moview, group by movie, created date
     
+    # decode token for auth
+    token = request.authorization.token
+    user = decode_token(token).get('sub')
+    user_id = UUID(user['id'])
+
+       # check if user is admin 
+    if user.get('is_admin'):
+        return jsonify({"message":"Admins do not have movie ratings"}), 403
     
+    # get all ratings for user
+    ratings = Rating.query.filter_by(user_id=user_id).join(Movie).all()
+
+    results = []
+    for rating in ratings:
+        results.append({
+            "movie_id": rating.movie_id,
+            'movie_title': rating.movie.title,
+            "rating": rating.rating
+            # "created_date": rating.created_date
+            })
+        
+
+    # return user ratings
+    return jsonify(results), 200

@@ -1,5 +1,5 @@
 from database.db import db
-from sqlalchemy import Integer, String, UUID, ForeignKey, CheckConstraint
+from sqlalchemy import Integer, String, UUID, ForeignKey, CheckConstraint, DateTime
 from datetime import datetime, timezone
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 import uuid
@@ -24,10 +24,15 @@ class Rating(db.Model):
     user_id: Mapped[UUID] = mapped_column(UUID, 
                                             ForeignKey('users.id'),
                                             nullable=False, 
-                                            unique=True)
+                                            unique=False)
     
 
-    rating: Mapped[int] = mapped_column(Integer, nullable=False)
+    rating: Mapped[int] = mapped_column(Integer, 
+                                        nullable=False)
+
+
+    # created_date: Mapped[datetime] = mapped_column(DateTime,
+    #                                                 nullable=False)
 
     # relationships
     movie = relationship('Movie', back_populates='ratings')
@@ -39,7 +44,7 @@ class Rating(db.Model):
         self.movie_id = movie_id
         self.user_id = user_id
         self.rating = rating
-        self.created_date = created_date or datetime.now(tz=timezone.utc)
+        # self.created_date = created_date or datetime.now(tz=timezone.utc)
 
 
     __table_args__ = (
