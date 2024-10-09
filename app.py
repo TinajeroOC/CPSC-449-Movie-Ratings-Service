@@ -5,6 +5,8 @@ from tokens.jwt import jwt
 from routes.auth import auth_blueprint
 from routes.movies import movies_blueprint
 from routes.ratings import ratings_blueprint
+from routes.update_ratings import update_blueprint
+from routes.delete_ratings import delete_blueprint
 
 def create_app():
     app = Flask(__name__)
@@ -30,6 +32,8 @@ def create_app():
     app.register_blueprint(file_upload_blueprint)
 
     app.register_blueprint(ratings_blueprint)
+    app.register_blueprint(update_blueprint)
+    app.register_blueprint(delete_blueprint)
 
     return app
 
