@@ -22,20 +22,13 @@ def update_rating():
     rating_value = request.form.get("rating")
     movie_title = request.form.get("movie_title")
     movie_release_year = request.form.get("movie_release_year")
-    # genre = request.form.get("genre")
-    # director = request.form.get("director")
 
-    # Error Checking
     # Validate required fields
     missing_fields = []
     if not movie_title:
         missing_fields.append("movie_title")
     if not movie_release_year:
         missing_fields.append("movie_release_year")
-    # if not genre:
-    #     missing_fields.append("genre")
-    # if not director:
-    #     missing_fields.append("director")
 
     # Display missing form fields, if any
     if missing_fields:
@@ -49,7 +42,6 @@ def update_rating():
     if not movie:
         return jsonify({"message": "Specified movie not found"}), 404
 
-
     # Check if the user has already rated the movie
     existing_rating = Rating.query.filter_by(movie_id=movie.id, user_id=user_id).first()
 
@@ -57,9 +49,9 @@ def update_rating():
         # check if new rating is different
         if existing_rating.rating == rating_value:
             return jsonify({"message": "Rating was not updated, must be a new value"}), 409
+
         # Update existing rating if different value
         existing_rating.rating = rating_value
         existing_rating.created_date = datetime.now()
         db.session.commit()
         return jsonify({"message": "Rating has been updated"}), 200
-  
