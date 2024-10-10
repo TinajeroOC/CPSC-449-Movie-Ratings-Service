@@ -16,7 +16,7 @@ class Movie(db.Model):
     release_year: Mapped[int] = mapped_column(Integer, nullable=False)
 
     # Relationship to Rating model
-    ratings = relationship('Rating', back_populates='movie')
+    ratings = relationship('Rating', back_populates='movie', lazy=True)
 
     def __init__(self, title=None, genre=None, director=None, release_year=None):
         self.title = title
