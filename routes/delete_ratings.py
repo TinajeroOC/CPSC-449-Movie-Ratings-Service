@@ -7,7 +7,7 @@ from flask_jwt_extended import jwt_required, decode_token
 from uuid import UUID
 delete_blueprint = Blueprint('delete_blueprint', __name__)
 
-@delete_blueprint.route("/delete-user", methods=['POST'])
+@delete_blueprint.route("/user/delete", methods=['POST'])
 @jwt_required()
 def user_delete_rating():
 
@@ -61,7 +61,7 @@ def user_delete_rating():
 
 
 
-@delete_blueprint.route("/delete-admin", methods=['POST'])
+@delete_blueprint.route("/admin/delete", methods=['POST'])
 @jwt_required()
 def admin_delete_rating():
 
@@ -70,16 +70,19 @@ def admin_delete_rating():
     user = decode_token(token).get('sub')
     # admin_id = UUID(user['id'])
 
-    if not user.get(is_admin):
+
+    # Check if admin sent the request
+    if not user.get("is_admin"):
         return jsonify({"message":"Only admins may delete other user ratings."}), 403
 
     # Get form data
     # rating_value = request.form.get("rating")
     movie_title = request.form.get("movie_title")
     movie_release_year = request.form.get("movie_release_year")
-    genre = request.form.get("genre")
-    director = request.form.get("director")
-    user_id = request.form.get("user_id")
+    # genre = request.form.get("genre")
+    # director = request.form.get("director")
+    user_id = UUID(request.form.get("user_id"))
+
 
     # Error Checking
     # Validate required fields
@@ -88,10 +91,10 @@ def admin_delete_rating():
         missing_fields.append("movie_title")
     if not movie_release_year:
         missing_fields.append("movie_release_year")
-    if not genre:
-        missing_fields.append("genre")
-    if not director:
-        missing_fields.append("director")
+    # if not genre:
+    #     missing_fields.append("genre")
+    # if not director:
+    #     missing_fields.append("director")
     if not user_id:
         missing_fields.append("user_id")
 
@@ -103,7 +106,8 @@ def admin_delete_rating():
             return jsonify({"message": f"{', '.join(missing_fields)} are missing"}), 400
 
     # Check if the movie exists 
-    movie = Movie.query.filter_by(title=movie_title, genre=genre, director=director, release_year=movie_release_year).first()
+    # genre=genre, director=director, 
+    movie = Movie.query.filter_by(title=movie_title, release_year=movie_release_year).first()
     if not movie:
         return jsonify({"message": "Specified movie not found"}), 404
 
@@ -112,7 +116,7 @@ def admin_delete_rating():
     existing_rating = Rating.query.filter_by(movie_id=movie.id, user_id=user_id).first()
 
     if not existing_rating:
-        return jsonify({"message": "Error, no user rating to delete"}), 400
+        return jsonify({"message": "Rating not found for this user"}), 400
 
     db.session.delete(existing_rating)
     db.session.commit()

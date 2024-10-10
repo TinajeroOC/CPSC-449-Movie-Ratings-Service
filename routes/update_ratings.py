@@ -22,8 +22,8 @@ def update_rating():
     rating_value = request.form.get("rating")
     movie_title = request.form.get("movie_title")
     movie_release_year = request.form.get("movie_release_year")
-    genre = request.form.get("genre")
-    director = request.form.get("director")
+    # genre = request.form.get("genre")
+    # director = request.form.get("director")
 
     # Error Checking
     # Validate required fields
@@ -32,10 +32,10 @@ def update_rating():
         missing_fields.append("movie_title")
     if not movie_release_year:
         missing_fields.append("movie_release_year")
-    if not genre:
-        missing_fields.append("genre")
-    if not director:
-        missing_fields.append("director")
+    # if not genre:
+    #     missing_fields.append("genre")
+    # if not director:
+    #     missing_fields.append("director")
 
     # Display missing form fields, if any
     if missing_fields:
@@ -45,7 +45,7 @@ def update_rating():
             return jsonify({"message": f"{', '.join(missing_fields)} are missing"}), 400
 
     # Check if the movie and rating exists
-    movie = Movie.query.filter_by(title=movie_title, genre=genre, director=director, release_year=movie_release_year).first()
+    movie = Movie.query.filter_by(title=movie_title,release_year=movie_release_year).first()
     if not movie:
         return jsonify({"message": "Specified movie not found"}), 404
 
