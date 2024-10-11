@@ -23,10 +23,17 @@ def update_rating():
     movie_title = request.form.get("movie_title")
     movie_release_year = request.form.get("movie_release_year")
 
+    # Check if values are ints
     try:
         movie_release_year = int(movie_release_year)
     except (ValueError, TypeError):
         return jsonify({"message": "movie_release_year is not an integer"}), 400
+
+    try:
+        rating_value = int(rating_value)
+    except (ValueError, TypeError):
+        return jsonify({"message": "rating_value is not an integer"}), 400
+
     
     # Validate required fields
     missing_fields = []
