@@ -19,7 +19,12 @@ def user_delete_rating():
 
     # Get form data
     movie_title = request.form.get("movie_title")
-    movie_release_year = int(request.form.get("movie_release_year"))
+    movie_release_year = request.form.get("movie_release_year")
+
+    try:
+        movie_release_year = int(movie_release_year)
+    except (ValueError, TypeError):
+        return jsonify({"message": "movie_release_year is not an integer"}), 400
     
     # Validate required fields
     missing_fields = []
@@ -62,9 +67,14 @@ def admin_delete_rating():
 
     # Get form data
     movie_title = request.form.get("movie_title")
-    movie_release_year = int(request.form.get("movie_release_year"))
+    movie_release_year = request.form.get("movie_release_year")
     user_id = UUID(request.form.get("user_id"))
 
+    try:
+        movie_release_year = int(movie_release_year)
+    except (ValueError, TypeError):
+        return jsonify({"message": "movie_release_year is not an integer"}), 400
+    
     # Validate required fields
     missing_fields = []
     if not movie_title:
