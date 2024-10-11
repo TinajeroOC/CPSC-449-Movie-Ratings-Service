@@ -40,7 +40,7 @@ def user_delete_rating():
     # Check if the user has already rated the movie
     existing_rating = Rating.query.filter_by(movie_id=movie.id, user_id=user_id).first()
     if not existing_rating:
-        return jsonify({"message": "Error, no rating to delete"}), 400
+        return jsonify({"message": "Error, you have not rated this movie"}), 404
 
     # Delete the existing rating
     db.session.delete(existing_rating)
@@ -86,7 +86,7 @@ def admin_delete_rating():
     # Check if the user has rated the movie
     existing_rating = Rating.query.filter_by(movie_id=movie.id, user_id=user_id).first()
     if not existing_rating:
-        return jsonify({"message": "Rating not found for this user"}), 400
+        return jsonify({"message": "Rating not found for this user"}), 404
 
     # Delete the rating
     db.session.delete(existing_rating)
