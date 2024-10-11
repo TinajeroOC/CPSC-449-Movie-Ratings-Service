@@ -19,7 +19,7 @@ def user_delete_rating():
 
     # Get form data
     movie_title = request.form.get("movie_title")
-    movie_release_year = request.form.get("movie_release_year")
+    movie_release_year = int(request.form.get("movie_release_year"))
     
     # Validate required fields
     missing_fields = []
@@ -62,7 +62,7 @@ def admin_delete_rating():
 
     # Get form data
     movie_title = request.form.get("movie_title")
-    movie_release_year = request.form.get("movie_release_year")
+    movie_release_year = int(request.form.get("movie_release_year"))
     user_id = UUID(request.form.get("user_id"))
 
     # Validate required fields
