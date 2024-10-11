@@ -36,22 +36,24 @@ def update_rating():
     if missing_fields:
         return jsonify({"message": f"{missing_fields[0]} is missing" if len(missing_fields) == 1 else f"{', '.join(missing_fields)} are missing"}), 400
 
-
-    # Check if the movie and rating exists
+    # Check if the movie exists
     movie = Movie.query.filter_by(title=movie_title,release_year=movie_release_year).first()
     if not movie:
         return jsonify({"message": "Specified movie not found"}), 404
 
     # Check if the user has already rated the movie
     existing_rating = Rating.query.filter_by(movie_id=movie.id, user_id=user_id).first()
+    
+    # Check if rating exists
+    if not existing_rating:
+        return jsonify({"message": "Error, you have not rated this movie"}), 404
 
-    if existing_rating:
-        # check if new rating is different
-        if existing_rating.rating == rating_value:
-            return jsonify({"message": "Rating was not updated, must be a new value"}), 409
-
-        # Update existing rating if different value
-        existing_rating.rating = rating_value
-        existing_rating.created_date = datetime.now()
-        db.session.commit()
-        return jsonify({"message": "Rating has been updated"}), 200
+    # Check if new rating is a different value
+    if existing_rating.rating == rating_value:
+        return jsonify({"message": "Rating was not updated, must be a new value"}), 409
+        
+    # Update existing rating if different value
+    existing_rating.rating = rating_value
+    existing_rating.created_date = datetime.now()
+    db.session.commit()
+    return jsonify({"message": "Rating has been updated"}), 200
