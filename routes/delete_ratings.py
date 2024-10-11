@@ -30,10 +30,7 @@ def user_delete_rating():
 
     # Display missing form fields, if any
     if missing_fields:
-        if len(missing_fields) == 1:
-            return jsonify({"message": f"{missing_fields[0]} is missing"}), 400
-        else:
-            return jsonify({"message": f"{', '.join(missing_fields)} are missing"}), 400
+        return jsonify({"message": f"{missing_fields[0]} is missing" if len(missing_fields) == 1 else f"{', '.join(missing_fields)} are missing"}), 400
 
     # Check if the movie and rating exists
     movie = Movie.query.filter_by(title=movie_title, release_year=movie_release_year).first()
@@ -79,10 +76,7 @@ def admin_delete_rating():
 
     # Display missing form fields, if any
     if missing_fields:
-        if len(missing_fields) == 1:
-            return jsonify({"message": f"{missing_fields[0]} is missing"}), 400
-        else:
-            return jsonify({"message": f"{', '.join(missing_fields)} are missing"}), 400
+        return jsonify({"message": f"{missing_fields[0]} is missing" if len(missing_fields) == 1 else f"{', '.join(missing_fields)} are missing"}), 400
 
     # Check if the movie exists 
     movie = Movie.query.filter_by(title=movie_title, release_year=movie_release_year).first()
