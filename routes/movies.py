@@ -40,3 +40,30 @@ def add_movie():
     db.session.commit()
 
     return jsonify({"message": "Movie has been added"}), 200
+
+
+
+# ● An endpoint to fetch details for a specific movie, including its user ratings.
+
+@movies_blueprint.route("/movies", methods=["GET"])
+@jwt_required()
+def get_movies():
+    title = request.form.get("title")
+    release_year = request.form.get("release_year")
+
+    if not title or not release_year:
+        return jsonify({"message": "A title and release year are required for results"}), 400
+    
+    # query database and get all related ratings
+    movie = Movie.query.filter_by(title=title, release_year=release_year).first()
+
+    # return related ratings to themovie title
+    ratings = []
+    if movie:
+        for r in movie.ratings:
+            ratings.append({
+                "user_id": r.user_id,
+                "rating": r.rating
+            })
+    
+    return jsonify({"title": movie.title, "release_year": movie.release_year, "ratings": ratings}), 200

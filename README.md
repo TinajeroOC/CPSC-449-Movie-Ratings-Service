@@ -53,9 +53,69 @@ This service allows users to register, log in, rate movies, and retrieve movie d
     "release_year": "2024"
   }
   ```
+  
+### POST `/update`
 
 
-### File Upload Endpoint
+
+
+  
+
+
+
+- **Description**: Allows a user to update their movie rating.
+- **Authentication**: Access token required.
+- **Fields**:
+  - `movie_title` (string, required): The title of the movie.
+  - `movie_release_year` (string, required): The year the movie was released.
+  - `rating` (int, required): The new rating the user wishes to give the movie. Must be an integer between 1 and 5.
+- **Request Body**:
+
+  ```json
+  {
+    "movie_title": "Movie Title",
+    "movie_release_year": "2024",
+    "rating": 5
+  }
+  ```
+  
+### POST `/delete`
+
+- **Description**: Allows a user to delete their own movie rating.
+- **Authentication**: Access token required.
+- **Fields**:
+  - `movie_title` (string, required): The title of the movie.
+  - `movie_release_year` (int, required): The year the movie was released.
+- **Request Body**:
+
+  ```json
+  {
+    "movie_title": "Movie Title",
+    "movie_release_year": "2024"
+  }
+  ```
+  
+### POST `/admin/delete`
+
+- **Description**: Allows an admin to delete any user's movie rating.
+- **Authentication**: Access token required.
+- **Fields**:
+  - `movie_title` (string, required): The title of the movie.
+  - `movie_release_year` (int, required): The year the movie was released.
+  - `user_id` (string, required): The UUID of the user whose rating you wish to delete.
+
+- **Request Body**:
+
+  ```json
+  {
+    "movie_title": "Movie Title",
+    "movie_release_year": "2024",
+    "user_id": "e7af5813-0849-4768-ab9c-3d2de6da7bfc"
+  }
+  ```
+
+
+  ### File Upload Endpoint
 
 #### POST `/upload`
 
@@ -83,12 +143,7 @@ This service allows users to register, log in, rate movies, and retrieve movie d
       "error": "File type not allowed"
     }
     ```
-
-
-  
-
-
-
+    
 ## Installation
 
 1. Clone the repository:
