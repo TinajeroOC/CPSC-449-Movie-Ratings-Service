@@ -54,6 +54,41 @@ This service allows users to register, log in, rate movies, and retrieve movie d
   }
   ```
 
+
+### File Upload Endpoint
+
+#### POST `/upload`
+
+- **Description**: Allows authenticated users to upload files to the server. Only files with allowed extensions will be accepted.
+
+- **Authentication**: Access token required.
+
+- **Request** (via Postman):
+  
+  - Select the `POST` method.
+  - Set the URL to: `http://localhost:5000/upload`
+  - In the "Authorization" tab, select `Bearer Token` and paste your access token.
+  - In the "Body" tab, select `form-data`, and add a key named `file` with the type set to `File`. Upload the file you want to send.
+
+- **Response**:
+  - On success:
+    ```json
+    {
+      "message": "File <filename> uploaded successfully"
+    }
+    ```
+  - On failure (e.g., unsupported file type):
+    ```json
+    {
+      "error": "File type not allowed"
+    }
+    ```
+
+
+  
+
+
+
 ## Installation
 
 1. Clone the repository:
