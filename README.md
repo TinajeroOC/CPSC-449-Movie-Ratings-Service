@@ -56,13 +56,6 @@ This service allows users to register, log in, rate movies, and retrieve movie d
   
 ### POST `/update`
 
-
-
-
-  
-
-
-
 - **Description**: Allows a user to update their movie rating.
 - **Authentication**: Access token required.
 - **Fields**:
@@ -94,7 +87,46 @@ This service allows users to register, log in, rate movies, and retrieve movie d
     "movie_release_year": "2024"
   }
   ```
+
+### GET `/ratings`
+
+- **Description**: Retrieves a list of all movie ratings from the current user.
+- **Authentication**: Access token required.
   
+### POST `/ratings`
+
+- **Description**: Allows a user to submit a movie rating.
+- **Authentication**: Access token required.
+- **Fields**:
+  - `movie_title` (string, required): The title of the movie.
+  - `movie_release_year` (int, required): The year the movie was released.
+  - `rating` (int, required): The user rating they wish to give the movie.
+- **Request Body**:
+  
+  ```json
+  {
+    "movie_title": "Movie Title",
+    "movie_release_year": "2024",
+    "rating": 4
+  }
+  ```
+
+### GET `/movies`
+
+- **Description**: Fetch details for a specific movie, including its user ratings.
+- **Authentication**: Access token required.
+- **Fields**:
+  - `title` (string, required): The title of the movie
+  - `release_year` (int, required): The year the movie was released.
+- **Request Body**:
+  
+  ```json
+  {
+    "movie_title": "Movie Title",
+    "movie_release_year": "2024"
+  }
+  ```
+
 ### POST `/admin/delete`
 
 - **Description**: Allows an admin to delete any user's movie rating.
@@ -115,9 +147,9 @@ This service allows users to register, log in, rate movies, and retrieve movie d
   ```
 
 
-  ### File Upload Endpoint
+## File Upload Endpoint
 
-#### POST `/upload`
+### POST `/upload`
 
 - **Description**: Allows authenticated users to upload files to the server. Only files with allowed extensions will be accepted.
 
