@@ -67,6 +67,10 @@ instance/*
 # lets us keep the instance directory in git without db contents
 !instance/.gitkeep
 
+# keep uploads folder but not its contents
+uploads/*
+!uploads/.gitkeep
+
 # Scrapy stuff:
 .scrapy
 
